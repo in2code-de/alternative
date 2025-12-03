@@ -1,0 +1,24 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  In2code\Alternative\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
+
+  In2code\Alternative\Domain\Service\AlternativeService:
+    public: true
+
+  In2code\Alternative\Domain\Service\AlternativeQueueService:
+    public: true
+
+  In2code\Alternative\Domain\Repository\LlmRepository:
+    public: true
+
+  In2code\Alternative\EventListeners\AddFileButtonListener:
+    tags:
+      - name: event.listener
+        identifier: 'alternative/filelist-button'
+        event: TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent

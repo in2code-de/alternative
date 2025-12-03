@@ -1,0 +1,2 @@
+#Hide module because we only need the functionality staring from existing file list
+options.hideModules := addToList(alternative_Module)

@@ -1,0 +1,32 @@
+{
+  "name": "in2code/alternative",
+  "description": "Automatically set alternative texts for images",
+  "type": "typo3-cms-extension",
+  "homepage": "https://www.in2code.de",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Sandra Pohl",
+      "email": "sandra.pohl@in2code.de",
+      "role": "Product Owner"
+    },
+    {
+      "name": "Alexander Kellner",
+      "email": "alexander.kellner@in2code.de",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "typo3/cms-core": "^13.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "In2code\\Alternative\\": "Classes/"
+    }
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "alternative"
+    }
+  }
+}

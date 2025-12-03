@@ -1,0 +1,17 @@
+# cat=basic//050; type=boolean; label= Set alternative label: Set a value for alternative text
+setAlternative = 1
+
+# cat=basic//060; type=boolean; label= Set title: Set a value for image title
+setTitle = 1
+
+# cat=basic//070; type=boolean; label= Set description label: Set a value for a description
+setDescription = 1
+
+# cat=basic//080; type=boolean; label= Show button in file list: Show or hide button in backend module file list
+showButtonInFileList = 1
+
+# cat=advanced//100; type=text; label= Gemini API key: Better use env GOOGLE_API_KEY instead
+apiKey =
+
+# cat=advanced//110; type=text; label= Limit to languages: If set, limit to this language identifiers only. Use a commaseparated list of numbers
+limitToLanguages =
