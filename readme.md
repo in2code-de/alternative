@@ -60,3 +60,23 @@ GOOGLE_API_KEY=your_api_key_from_google
 | Version | Date       | State   | Description                            |
 |---------|------------|---------|----------------------------------------|
 | 1.0.0   | 2025-12-03 | Task    | Initial release of in2code/alternative |
+
+
+## Contribution with ddev
+
+This repository provides a [DDEV]()-backed development environment. If DDEV is installed, simply run the following
+commands to quickly set up a local environment with example usages:
+
+* `ddev start`
+* `ddev initialize`
+
+**Backend Login:**
+```
+Username: admin
+Password: admin
+```
+
+**Installation hint:**
+
+1. Install ddev before, see: https://ddev.readthedocs.io/en/stable/#installation
+2. Install git-lfs before, see: https://git-lfs.github.com/
