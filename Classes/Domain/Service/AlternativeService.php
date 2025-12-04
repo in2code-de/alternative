@@ -14,7 +14,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AlternativeService
 {
-    const string TABLE = 'sys_file_metadata';
+    const TABLE = 'sys_file_metadata';
     protected bool $enforce = false;
 
     public function __construct(
