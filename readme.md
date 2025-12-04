@@ -57,9 +57,10 @@ GOOGLE_API_KEY=your_api_key_from_google
 
 ## Changelog and breaking changes
 
-| Version | Date       | State   | Description                            |
-|---------|------------|---------|----------------------------------------|
-| 1.0.0   | 2025-12-03 | Task    | Initial release of in2code/alternative |
+| Version | Date       | State   | Description                                                    |
+|---------|------------|---------|----------------------------------------------------------------|
+| 1.1.0   | 2025-12-04 | Feature | Add ddev as local environment, prevent syntax error in PHP 8.2 |
+| 1.0.0   | 2025-12-03 | Task    | Initial release of in2code/alternative                         |
 
 
 ## Contribution with ddev
