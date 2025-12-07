@@ -4,8 +4,8 @@
 		<header/>
 		<body>
 			<trans-unit id="button.translate">
-				<source>Translate with AI</source>
-				<target state="translated">Mit KI übersetzen</target>
+				<source>Fill metadata from AI</source>
+				<target state="translated">Metadaten mit Hilfe von KI setzen</target>
 			</trans-unit>
 			<trans-unit id="action.finished">
 				<source>Metadata successfully added</source>

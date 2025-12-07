@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="button.translate">
-				<source>Translate with AI</source>
+				<source>Fill metadata from AI</source>
 			</trans-unit>
 			<trans-unit id="action.finished">
 				<source>Metadata successfully added</source>
