@@ -9,5 +9,13 @@ languages:
     locale: en_US.UTF-8
     navigationTitle: English
     flag: us
+  -
+    title: Deutsch
+    enabled: true
+    languageId: 1
+    base: /
+    locale: de_DE.UTF-8
+    navigationTitle: German
+    flag: de
 rootPageId: 1
 routes: {  }
