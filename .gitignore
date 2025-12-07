@@ -29,3 +29,4 @@ var/
 /Tests/Acceptance/_output/*
 /Tests/Acceptance/_support/_generated/
 /.ddev/.env
+/CLAUDE.md

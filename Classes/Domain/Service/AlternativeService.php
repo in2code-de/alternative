@@ -26,6 +26,9 @@ class AlternativeService
     public function setImageMetadata(File $image, bool $enforce): bool
     {
         $changed = false;
+        if ($image->isMissing()) {
+            return $changed;
+        }
         $this->enforce = $enforce;
         $metadata = $image->getMetaData();
         $properties = $metadata->get();
@@ -34,11 +37,11 @@ class AlternativeService
             if ($languageId === 0) {
                 if ($this->shouldUpdate($properties)) {
                     $labels = $this->llmRepository->analyzeImage($image, $languageCode);
-                    $this->updateMetadata($properties['uid'], $labels);
+                    $this->updateMetadata((int)$properties['uid'], $labels);
                     $changed = true;
                 }
             } else {
-                $translation = $this->getOrCreateTranslation($properties['uid'], $languageId, $image->getUid());
+                $translation = $this->getOrCreateTranslation((int)$properties['uid'], $languageId, $image->getUid());
                 if ($this->shouldUpdate($translation)) {
                     $labels = $this->llmRepository->analyzeImage($image, $languageCode);
                     $this->updateMetadata($translation['uid'], $labels);
