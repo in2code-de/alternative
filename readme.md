@@ -57,10 +57,11 @@ GOOGLE_API_KEY=your_api_key_from_google
 
 ## Changelog and breaking changes
 
-| Version | Date       | State   | Description                                                    |
-|---------|------------|---------|----------------------------------------------------------------|
-| 1.1.0   | 2025-12-04 | Feature | Add ddev as local environment, prevent syntax error in PHP 8.2 |
-| 1.0.0   | 2025-12-03 | Task    | Initial release of in2code/alternative                         |
+| Version | Date       | State   | Description                                                                                      |
+|---------|------------|---------|--------------------------------------------------------------------------------------------------|
+| 1.2.0   | 2025-12-07 | Feature | Support TYPO3 14, use better titles and icons, decrease length for metadata, skip missing images |
+| 1.1.0   | 2025-12-04 | Feature | Add ddev as local environment, prevent syntax error in PHP 8.2                                   |
+| 1.0.0   | 2025-12-03 | Task    | Initial release of in2code/alternative                                                           |
 
 
 ## Contribution with ddev
@@ -81,3 +82,8 @@ Password: admin
 
 1. Install ddev before, see: https://ddev.readthedocs.io/en/stable/#installation
 2. Install git-lfs before, see: https://git-lfs.github.com/
+3. Add the API key in `.ddev/.env` like
+
+```
+GOOGLE_API_KEY=your_api_key_from_google
+```
