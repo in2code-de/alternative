@@ -54,7 +54,7 @@ class AddFileButtonListener
             ->setTitle(LocalizationUtility::translate(
                 'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:button.translate')
             )
-            ->setIcon($this->iconFactory->getIcon('actions-translate', IconSize::SMALL))
+            ->setIcon($this->iconFactory->getIcon('extension-alternative-icon-magic', IconSize::SMALL))
             ->setHref(
                 (string)$this->uriBuilder->buildUriFromRoute(
                     'alternative_Module.Module_addMetadata',
