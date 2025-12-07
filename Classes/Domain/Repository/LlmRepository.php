@@ -16,9 +16,9 @@ class LlmRepository
     private string $apiUrl = 'https://generativelanguage.googleapis.com/v1/models/';
     private string $model = 'gemini-2.5-flash:generateContent';
     private array $fields = [
-        'title' => 'tile (max 255 characters)',
-        'description' => 'description (max 1024 characters)',
-        'alternativeText' => 'alternative text (max 255 characters)',
+        'title' => 'tile (max 75 characters)',
+        'description' => 'description (max 255 characters)',
+        'alternativeText' => 'alternative text (max 100 characters)',
     ];
     private string $languageCode = ''; // e.g. "en"
 
