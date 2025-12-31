@@ -14,10 +14,11 @@ Example backend integration:
 Example CLI command:
 ![documentation_example3.png](Documentation/Images/documentation_example3.png)
 
-## Google Gemini
+## Google Gemini API
 
-- To use the extension, you need a **Google Gemini API** key. You can register for one 
+- To use the extension, you need a **Google Gemini API** key. You can register for one
     at https://aistudio.google.com/app/api-keys.
+- Alternatively, you can implement your own LLM provider (see [Custom LLM Integration](#custom-llm-integration-like-chatgpt-claude-mistral-etc) below).
 
 ## Installation
 
@@ -54,6 +55,146 @@ GOOGLE_API_KEY=your_api_key_from_google
 # Enforce to set metadata for all image files in storage 1
 ./vendor/bin/typo3 alternative:set "1:/" 1
 ```
+
+## Custom LLM Integration (like ChatGPT, Claude, Mistral, etc.)
+
+Alternative uses a factory pattern to allow custom LLM providers. By default, it uses Google Gemini,
+but you can easily integrate other AI services (OpenAI, Claude, local models, etc.).
+
+### Implementing a Custom LLM Repository
+
+1. Create a custom repository class implementing `RepositoryInterface` - see example for OpenAI ChatGPT:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Vendor\MyExtension\Domain\Repository\Llm;
+
+use In2code\Alternative\Domain\Repository\Llm\AbstractRepository;
+use In2code\Alternative\Domain\Repository\Llm\RepositoryInterface;
+use In2code\Alternative\Exception\ApiException;
+use In2code\Alternative\Exception\ConfigurationException;
+use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Resource\File;
+
+class ChatGptRepository extends AbstractRepository implements RepositoryInterface
+{
+    private string $apiKey = '';
+    private string $apiUrl = 'https://api.openai.com/v1/chat/completions';
+
+    public function __construct(
+        protected RequestFactory $requestFactory,
+    ) {
+        parent::__construct($requestFactory);
+        $this->apiKey = getenv('OPENAI_API_KEY') ?: '';
+    }
+
+    public function checkApiKey(): void
+    {
+        if ($this->apiKey === '') {
+            throw new ConfigurationException('OpenAI API key not configured', 1735646000);
+        }
+    }
+
+    public function getApiUrl(): string
+    {
+        return $this->apiUrl;
+    }
+
+    public function analyzeImage(File $file, string $languageCode): array
+    {
+        $this->checkApiKey();
+        $this->setLanguageCode($languageCode);
+        $imageData = base64_encode($file->getContents());
+        return $this->generateMetadataWithChatGpt($imageData, $file->getMimeType());
+    }
+
+    protected function generateMetadataWithChatGpt(string $imageData, string $mimeType): array
+    {
+        $payload = [
+            'model' => 'gpt-4o',
+            'messages' => [
+                [
+                    'role' => 'user',
+                    'content' => [
+                        ['type' => 'text', 'text' => $this->getPrompt()],
+                        [
+                            'type' => 'image_url',
+                            'image_url' => [
+                                'url' => 'data:' . $mimeType . ';base64,' . $imageData,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'temperature' => 0.1,
+            'max_tokens' => 500,
+        ];
+
+        $options = [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode($payload),
+        ];
+
+        $response = $this->requestFactory->request($this->getApiUrl(), $this->requestMethod, $options);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new ApiException(
+                'Failed to analyze image with ChatGPT: ' . $response->getBody()->getContents(),
+                1735646001
+            );
+        }
+
+        $responseData = json_decode($response->getBody()->getContents(), true);
+        return $this->parseResponse($responseData);
+    }
+
+    protected function parseResponse(array $responseData): array
+    {
+        if (isset($responseData['choices'][0]['message']['content']) === false) {
+            throw new ApiException('Invalid ChatGPT API response structure', 1735646002);
+        }
+
+        $text = $responseData['choices'][0]['message']['content'];
+
+        // Extract JSON from markdown code blocks if present
+        if (preg_match('/```json\s*(\{.*?\})\s*```/s', $text, $matches)) {
+            $text = $matches[1];
+        } elseif (preg_match('/```\s*(\{.*?\})\s*```/s', $text, $matches)) {
+            $text = $matches[1];
+        }
+
+        $data = json_decode($text, true);
+        if ($data === null) {
+            throw new ApiException('Could not parse ChatGPT response as JSON', 1735646003);
+        }
+
+        return [
+            'title' => $data['title'] ?? '',
+            'description' => $data['description'] ?? '',
+            'alternativeText' => $data['alternativeText'] ?? '',
+        ];
+    }
+}
+```
+
+2. Register your custom repository in `ext_localconf.php`:
+
+```php
+<?php
+defined('TYPO3') || die();
+
+// Register custom LLM repository
+$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['alternative']['llmRepositoryClass']
+    = \Vendor\MyExtension\Domain\Repository\Llm\ChatGptRepository::class;
+```
+
+**Hint**: Don't forget to register your Repository in your Services.yaml and flush caches
 
 ## Changelog and breaking changes
 

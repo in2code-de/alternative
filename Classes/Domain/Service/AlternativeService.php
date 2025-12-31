@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\Alternative\Domain\Service;
 
-use In2code\Alternative\Domain\Repository\LlmRepository;
+use In2code\Alternative\Domain\Repository\Llm\RepositoryInterface;
 use In2code\Alternative\Utility\ConfigurationUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -18,7 +18,7 @@ class AlternativeService
     protected bool $enforce = false;
 
     public function __construct(
-        readonly private LlmRepository $llmRepository,
+        readonly private RepositoryInterface $llmRepository,
         readonly private SiteFinder $siteFinder,
     ) {
     }

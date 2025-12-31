@@ -14,8 +14,15 @@ services:
   In2code\Alternative\Domain\Service\AlternativeQueueService:
     public: true
 
-  In2code\Alternative\Domain\Repository\LlmRepository:
+  In2code\Alternative\Domain\Repository\Llm\:
+    resource: '../Classes/Domain/Repository/Llm/*.php'
+    exclude: '../Classes/Domain/Repository/Llm/{AbstractRepository.php,RepositoryInterface.php}'
     public: true
+
+  In2code\Alternative\Domain\Repository\Llm\RepositoryInterface:
+    factory:
+      - '@In2code\Alternative\Domain\Repository\Llm\LlmRepositoryFactory'
+      - 'create'
 
   In2code\Alternative\EventListeners\AddFileButtonListener:
     tags:
