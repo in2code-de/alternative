@@ -200,6 +200,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['alternative']['llmRepositoryClass']
 
 | Version | Date       | State   | Description                                                                                      |
 |---------|------------|---------|--------------------------------------------------------------------------------------------------|
+| 2.0.0   | 2025-12-31 | Feature | Prepare overruling of the GeminiRepository                                                       |
 | 1.2.0   | 2025-12-07 | Feature | Support TYPO3 14, use better titles and icons, decrease length for metadata, skip missing images |
 | 1.1.0   | 2025-12-04 | Feature | Add ddev as local environment, prevent syntax error in PHP 8.2                                   |
 | 1.0.0   | 2025-12-03 | Task    | Initial release of in2code/alternative                                                           |
