@@ -208,7 +208,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['alternative']['llmRepositoryClass']
 
 ## Contribution with ddev
 
-This repository provides a [DDEV]()-backed development environment. If DDEV is installed, simply run the following
+This repository provides a [DDEV](https://ddev.readthedocs.io)-backed development environment. If DDEV is installed, simply run the following
 commands to quickly set up a local environment with example usages:
 
 * `ddev start`
