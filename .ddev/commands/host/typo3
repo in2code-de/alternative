@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: Run TYPO3 CLI commands
+## Usage: typo3 [command]
+## Example: "ddev typo3 cache:flush" or "ddev typo3 alternative:set 1:/"
+
+ddev exec .Build/bin/typo3 "$@"

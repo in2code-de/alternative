@@ -229,3 +229,12 @@ Password: admin
 ```
 GOOGLE_API_KEY=your_api_key_from_google
 ```
+
+### DDEV Commands
+
+| Command                   | Description                                                        |
+|---------------------------|--------------------------------------------------------------------|
+| `ddev initialize`         | Import test data into ddev (database and configurations)           |
+| `ddev typo3 [command]`    | Run TYPO3 CLI commands (e.g. `ddev typo3 cache:flush`)             |
+| `ddev createdumpfile`     | Create database dump and save to `.ddev/data/db.sql.gz`            |
+| `ddev createfilesarchive` | Create fileadmin archive and save to `.ddev/data/fileadmin.tar.gz` |

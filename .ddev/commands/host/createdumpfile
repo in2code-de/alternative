@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: Create a database dump and save it to .ddev/data/db.sql.gz
+## Usage: createdumpfile
+## Example: "ddev createdumpfile"
+
+ddev export-db --gzip --file=.ddev/data/db.sql.gz
