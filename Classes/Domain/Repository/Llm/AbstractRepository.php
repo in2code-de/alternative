@@ -6,6 +6,7 @@ namespace In2code\Alternative\Domain\Repository\Llm;
 
 use In2code\Alternative\Utility\ConfigurationUtility;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractRepository
 {
@@ -23,10 +24,27 @@ abstract class AbstractRepository
 
     protected function getPrompt(): string
     {
-        $prompt = 'Analyze this image and provide ' . $this->getFieldValues() . '. ';
+        $prompt = $this->getPromptPrefix();
+        $prompt .= 'Analyze this image and provide ' . $this->getFieldValues() . '. ';
         $prompt .= 'Return as JSON with keys: ' . $this->getFieldKeys() . ' ';
         $prompt .= 'Answer in language ' . $this->getLanguageCode() . ' (ISO 639) only!';
         return $prompt;
+    }
+
+    protected function getPromptPrefix(): string
+    {
+        $content = '';
+        $filePath = ConfigurationUtility::getConfigurationByKey('promptPrefixFile');
+        if ($filePath !== '') {
+            $absolutePath = GeneralUtility::getFileAbsFileName($filePath);
+            if ($absolutePath !== '' && is_file($absolutePath) && is_readable($absolutePath)) {
+                $contentFile = file_get_contents($absolutePath);
+                if ($contentFile !== false && $contentFile !== '') {
+                    $content = trim($contentFile) . PHP_EOL . PHP_EOL;
+                }
+            }
+        }
+        return $content;
     }
 
     protected function getFieldValues(): string

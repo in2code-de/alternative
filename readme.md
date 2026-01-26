@@ -39,6 +39,7 @@ After that, you have to set some initial configuration in Extension Manager conf
 | maxLengthTitle       | 50            | Maximum number of characters for the title field                                                                                                     |
 | maxLengthAlternative | 125           | Maximum number of characters for the alternative text field                                                                                          |
 | maxLengthDescription | 255           | Maximum number of characters for the description field                                                                                               |
+| promptPrefixFile     | -             | Path to a text file with custom prompt prefix (e.g. `fileadmin/promptprefix.txt` or `/var/www/prompt.txt`)                                           |
 
 Note: It's recommended to use ENV vars for in2code/alternative instead of saving the API-Key in Extension Manager configuration
 

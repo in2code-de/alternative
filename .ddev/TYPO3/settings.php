@@ -33,6 +33,7 @@ return [
             'maxLengthAlternative' => '125',
             'maxLengthDescription' => '255',
             'maxLengthTitle' => '50',
+            'promptPrefixFile' => 'fileadmin/subfolder/promptprefix.txt',
             'setAlternative' => '1',
             'setDescription' => '1',
             'setTitle' => '1',

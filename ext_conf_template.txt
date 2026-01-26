@@ -24,3 +24,6 @@ maxLengthAlternative = 125
 
 # cat=advanced//140; type=int+; label= Max length description: Maximum number of characters for the description field
 maxLengthDescription = 255
+
+# cat=advanced//150; type=text; label= Prompt prefix file: Path to a text file with custom prompt prefix (e.g. fileadmin/promptprefix.txt or /var/www/prompt.txt)
+promptPrefixFile =
