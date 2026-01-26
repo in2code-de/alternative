@@ -9,12 +9,11 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 
 abstract class AbstractRepository
 {
+    protected const DEFAULT_MAX_LENGTH_TITLE = 50;
+    protected const DEFAULT_MAX_LENGTH_ALTERNATIVE = 125;
+    protected const DEFAULT_MAX_LENGTH_DESCRIPTION = 255;
+
     protected string $requestMethod = 'POST';
-    protected array $fields = [
-        'title' => 'tile (max 75 characters)',
-        'description' => 'description (max 255 characters)',
-        'alternativeText' => 'alternative text (max 100 characters)',
-    ];
     protected string $languageCode = ''; // e.g. "en"
 
     public function __construct(
@@ -42,15 +41,18 @@ abstract class AbstractRepository
 
     protected function getFields(): array
     {
-        $fields = $this->fields;
-        if (ConfigurationUtility::getConfigurationByKey('setAlternative') === '0') {
-            unset($fields['alternativeText']);
+        $fields = [];
+        if (ConfigurationUtility::getConfigurationByKey('setTitle') !== '0') {
+            $maxLength = (int)(ConfigurationUtility::getConfigurationByKey('maxLengthTitle') ?: self::DEFAULT_MAX_LENGTH_TITLE);
+            $fields['title'] = 'title (max ' . $maxLength . ' characters)';
         }
-        if (ConfigurationUtility::getConfigurationByKey('setTitle') === '0') {
-            unset($fields['title']);
+        if (ConfigurationUtility::getConfigurationByKey('setDescription') !== '0') {
+            $maxLength = (int)(ConfigurationUtility::getConfigurationByKey('maxLengthDescription') ?: self::DEFAULT_MAX_LENGTH_DESCRIPTION);
+            $fields['description'] = 'description (max ' . $maxLength . ' characters)';
         }
-        if (ConfigurationUtility::getConfigurationByKey('setDescription') === '0') {
-            unset($fields['description']);
+        if (ConfigurationUtility::getConfigurationByKey('setAlternative') !== '0') {
+            $maxLength = (int)(ConfigurationUtility::getConfigurationByKey('maxLengthAlternative') ?: self::DEFAULT_MAX_LENGTH_ALTERNATIVE);
+            $fields['alternativeText'] = 'alternative text (max ' . $maxLength . ' characters)';
         }
         return $fields;
     }

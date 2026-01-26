@@ -15,3 +15,12 @@ apiKey =
 
 # cat=advanced//110; type=text; label= Limit to languages: If set, limit to this language identifiers only. Use a commaseparated list of numbers
 limitToLanguages =
+
+# cat=advanced//120; type=int+; label= Max length title: Maximum number of characters for the title field
+maxLengthTitle = 50
+
+# cat=advanced//130; type=int+; label= Max length alternative: Maximum number of characters for the alternative text field
+maxLengthAlternative = 125
+
+# cat=advanced//140; type=int+; label= Max length description: Maximum number of characters for the description field
+maxLengthDescription = 255
