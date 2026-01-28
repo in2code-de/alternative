@@ -28,18 +28,18 @@ composer req in2code/alternative
 
 After that, you have to set some initial configuration in Extension Manager configuration:
 
-| Title                | Default value | Description                                                                                                                                          |
-|----------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| setAlternative       | 1             | Toggle function: Set a value for alternative text                                                                                                    |
-| setTitle             | 1             | Toggle function: Set a value for image title                                                                                                         |
-| setDescription       | 1             | Toggle function: Set a value for a description                                                                                                       |
-| showButtonInFileList | 1             | Show or hide button in backend module file list                                                                                                      |
-| apiKey               | -             | Google Gemini API key. You can let this value empty and simply use ENV_VAR "GOOGLE_API_KEY" instead if you want to use CI pipelines for this setting |
-| limitToLanguages     | -             | If set, limit to this language identifiers only. Use a commaseparated list of numbers                                                                |
-| maxLengthTitle       | 50            | Maximum number of characters for the title field                                                                                                     |
-| maxLengthAlternative | 125           | Maximum number of characters for the alternative text field                                                                                          |
-| maxLengthDescription | 255           | Maximum number of characters for the description field                                                                                               |
-| promptPrefixFile     | -             | Path to a text file with custom prompt prefix (e.g. `fileadmin/promptprefix.txt` or `/var/www/prompt.txt`)                                           |
+| Title                | Default value | Description                                                                                                                                                |
+|----------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| setAlternative       | 1             | Toggle function: Set a value for alternative text                                                                                                          |
+| setTitle             | 1             | Toggle function: Set a value for image title                                                                                                               |
+| setDescription       | 1             | Toggle function: Set a value for a description                                                                                                             |
+| showButtonInFileList | 1             | Show or hide button in backend module file list                                                                                                            |
+| apiKey               | -             | Google Gemini API key. You can let this value empty and simply use ENV_VAR "GOOGLE_API_KEY" instead if you want to use CI pipelines for this setting       |
+| limitToLanguages     | -             | If set, limit to this language identifiers only. Use a commaseparated list of numbers                                                                      |
+| maxLengthTitle       | 50            | Maximum number of characters for the title field                                                                                                           |
+| maxLengthAlternative | 125           | Maximum number of characters for the alternative text field                                                                                                |
+| maxLengthDescription | 255           | Maximum number of characters for the description field                                                                                                     |
+| promptPrefixFile     | -             | Path to a text file with custom prompt prefix (e.g. `EXT:extension/Resources/Private/prompt.txt` or `fileadmin/promptprefix.txt` or `/var/www/prompt.txt`) |
 
 Note: It's recommended to use ENV vars for in2code/alternative instead of saving the API-Key in Extension Manager configuration
 
