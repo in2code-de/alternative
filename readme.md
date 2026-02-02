@@ -204,6 +204,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['alternative']['llmRepositoryClass']
 
 | Version | Date       | State   | Description                                                                                      |
 |---------|------------|---------|--------------------------------------------------------------------------------------------------|
+| 3.0.1   | 2026-02-02 | Task    | Add funding section to composer.json                                                             |
 | 3.0.0   | 2026-01-28 | Feature | Configure max length, configure a pre-prompt text, some improvements for local development       |
 | 2.0.0   | 2025-12-31 | Feature | Prepare overruling of the GeminiRepository                                                       |
 | 1.2.0   | 2025-12-07 | Feature | Support TYPO3 14, use better titles and icons, decrease length for metadata, skip missing images |
