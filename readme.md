@@ -107,15 +107,21 @@ class ChatGptRepository extends AbstractRepository implements RepositoryInterfac
         return $this->apiUrl;
     }
 
-    public function analyzeImage(File $file, string $languageCode): array
+    /**
+     * Analyze image and return metadata for all requested languages in one API call
+     *
+     * @param File $file
+     * @param array $languageCodes e.g. ['en', 'de', 'fr']
+     * @return array e.g. ['en' => ['title' => '...', ...], 'de' => [...], ...]
+     */
+    public function analyzeImageForLanguages(File $file, array $languageCodes): array
     {
         $this->checkApiKey();
-        $this->setLanguageCode($languageCode);
         $imageData = base64_encode($file->getContents());
-        return $this->generateMetadataWithChatGpt($imageData, $file->getMimeType());
+        return $this->generateMetadataWithChatGpt($imageData, $file->getMimeType(), $languageCodes);
     }
 
-    protected function generateMetadataWithChatGpt(string $imageData, string $mimeType): array
+    protected function generateMetadataWithChatGpt(string $imageData, string $mimeType, array $languageCodes): array
     {
         $payload = [
             'model' => 'gpt-4o',
@@ -123,7 +129,7 @@ class ChatGptRepository extends AbstractRepository implements RepositoryInterfac
                 [
                     'role' => 'user',
                     'content' => [
-                        ['type' => 'text', 'text' => $this->getPrompt()],
+                        ['type' => 'text', 'text' => $this->getPrompt($languageCodes)],
                         [
                             'type' => 'image_url',
                             'image_url' => [
@@ -134,7 +140,7 @@ class ChatGptRepository extends AbstractRepository implements RepositoryInterfac
                 ],
             ],
             'temperature' => 0.1,
-            'max_tokens' => 500,
+            'max_tokens' => 2000,
         ];
 
         $options = [
@@ -155,10 +161,10 @@ class ChatGptRepository extends AbstractRepository implements RepositoryInterfac
         }
 
         $responseData = json_decode($response->getBody()->getContents(), true);
-        return $this->parseResponse($responseData);
+        return $this->parseResponse($responseData, $languageCodes);
     }
 
-    protected function parseResponse(array $responseData): array
+    protected function parseResponse(array $responseData, array $languageCodes): array
     {
         if (isset($responseData['choices'][0]['message']['content']) === false) {
             throw new ApiException('Invalid ChatGPT API response structure', 1735646002);
@@ -167,9 +173,9 @@ class ChatGptRepository extends AbstractRepository implements RepositoryInterfac
         $text = $responseData['choices'][0]['message']['content'];
 
         // Extract JSON from markdown code blocks if present
-        if (preg_match('/```json\s*(\{.*?\})\s*```/s', $text, $matches)) {
+        if (preg_match('~```json\s*(\{.*?\})\s*```~s', $text, $matches)) {
             $text = $matches[1];
-        } elseif (preg_match('/```\s*(\{.*?\})\s*```/s', $text, $matches)) {
+        } elseif (preg_match('~```\s*(\{.*?\})\s*```~s', $text, $matches)) {
             $text = $matches[1];
         }
 
@@ -178,11 +184,16 @@ class ChatGptRepository extends AbstractRepository implements RepositoryInterfac
             throw new ApiException('Could not parse ChatGPT response as JSON', 1735646003);
         }
 
-        return [
-            'title' => $data['title'] ?? '',
-            'description' => $data['description'] ?? '',
-            'alternativeText' => $data['alternativeText'] ?? '',
-        ];
+        $result = [];
+        foreach ($languageCodes as $languageCode) {
+            $languageData = $data[$languageCode] ?? [];
+            $result[$languageCode] = [
+                'title' => $languageData['title'] ?? '',
+                'description' => $languageData['description'] ?? '',
+                'alternativeText' => $languageData['alternativeText'] ?? '',
+            ];
+        }
+        return $result;
     }
 }
 ```
