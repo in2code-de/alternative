@@ -216,6 +216,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['alternative']['llmRepositoryClass']
 
 | Version   | Date       | State   | Description                                                                                      |
 |-----------|------------|---------|--------------------------------------------------------------------------------------------------|
+| 4.1.0     | 2026-02-04 | Feature | Skip and log errors feature on CLI                                                               |
 | 4.0.1     | 2026-02-04 | Bugfix  | Harden response handling against invalid formats                                                 |
 | 4.0.0 !!! | 2026-02-04 | Feature | Performance update for systems with a lot of languages                                           |
 | 3.0.1     | 2026-02-02 | Task    | Add funding section to composer.json                                                             |
