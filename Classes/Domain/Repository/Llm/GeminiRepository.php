@@ -76,8 +76,7 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
             throw new ApiException('Invalid response from Gemini API: ' . json_encode($responseData), 1764248502);
         }
         $text = $responseData['candidates'][0]['content']['parts'][0]['text'] ?? '';
-        $text = trim($text, '` ');
-        $text = preg_replace('~^json\s*~i', '', $text);
+        $text = $this->extractJsonFromResponse($text);
         $data = json_decode($text, true);
         if ($data === null) {
             throw new ApiException('Failed to parse JSON response: ' . $text, 1764248503);

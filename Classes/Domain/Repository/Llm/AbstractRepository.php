@@ -25,10 +25,10 @@ abstract class AbstractRepository
     {
         $prompt = $this->getPromptPrefix();
         $prompt .= 'Analyze this image and provide ' . $this->getFieldValues() . '. ';
-        $prompt .= 'Return as JSON object with language codes as keys. ';
         $prompt .= 'Required languages: ' . implode(', ', $languageCodes) . '. ';
         $prompt .= 'Each language must have keys: ' . $this->getFieldKeys() . '. ';
-        $prompt .= 'Example: {"en": {"title": "...", "description": "...", "alternativeText": "..."}, "de": {...}}';
+        $prompt .= 'Return ONLY a valid JSON object, no markdown, no code blocks, no explanation. ';
+        $prompt .= 'Format: {"en": {"title": "...", "description": "...", "alternativeText": "..."}, "de": {...}}';
         return $prompt;
     }
 
@@ -74,5 +74,18 @@ abstract class AbstractRepository
             $fields['alternativeText'] = 'alternative text (max ' . $maxLength . ' characters)';
         }
         return $fields;
+    }
+
+    protected function extractJsonFromResponse(string $text): string
+    {
+        if (preg_match('~```(?:json)?\s*([\s\S]*?)\s*```~', $text, $matches)) {
+            return trim($matches[1]);
+        }
+        $firstBrace = strpos($text, '{');
+        $lastBrace = strrpos($text, '}');
+        if ($firstBrace !== false && $lastBrace !== false && $lastBrace > $firstBrace) {
+            return substr($text, $firstBrace, $lastBrace - $firstBrace + 1);
+        }
+        return trim($text);
     }
 }

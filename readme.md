@@ -171,14 +171,7 @@ class ChatGptRepository extends AbstractRepository implements RepositoryInterfac
         }
 
         $text = $responseData['choices'][0]['message']['content'];
-
-        // Extract JSON from markdown code blocks if present
-        if (preg_match('~```json\s*(\{.*?\})\s*```~s', $text, $matches)) {
-            $text = $matches[1];
-        } elseif (preg_match('~```\s*(\{.*?\})\s*```~s', $text, $matches)) {
-            $text = $matches[1];
-        }
-
+        $text = $this->extractJsonFromResponse($text);
         $data = json_decode($text, true);
         if ($data === null) {
             throw new ApiException('Could not parse ChatGPT response as JSON', 1735646003);
