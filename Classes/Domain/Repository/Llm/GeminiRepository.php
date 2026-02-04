@@ -35,35 +35,21 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
         return $this->apiUrl . $this->model . '?key=' . $this->apiKey;
     }
 
-    public function analyzeImage(File $file, string $languageCode): array
+    public function analyzeImageForLanguages(File $file, array $languageCodes): array
     {
         $this->checkApiKey();
-        $this->setLanguageCode($languageCode);
         $imageData = base64_encode($file->getContents());
-        return $this->generateMetadataWithGemini($imageData, $file->getMimeType());
+        return $this->generateMetadataWithGemini($imageData, $file->getMimeType(), $languageCodes);
     }
 
-    /**
-     * Example return value:
-     *  [
-     *      'title' => 'foo',
-     *      'description' => 'bar',
-     *      'alternativeText' => 'baz',
-     *  ]
-     *
-     * @param string $imageData
-     * @param string $mimeType
-     * @return array
-     * @throws ApiException
-     */
-    protected function generateMetadataWithGemini(string $imageData, string $mimeType): array
+    protected function generateMetadataWithGemini(string $imageData, string $mimeType, array $languageCodes): array
     {
         $payload = [
             'contents' => [
                 [
                     'parts' => [
                         [
-                            'text' => $this->getPrompt(),
+                            'text' => $this->getPrompt($languageCodes),
                         ],
                         [
                             'inline_data' => [
@@ -91,15 +77,20 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
         }
         $text = $responseData['candidates'][0]['content']['parts'][0]['text'] ?? '';
         $text = trim($text, '` ');
-        $text = preg_replace('/^json\s*/i', '', $text);
+        $text = preg_replace('~^json\s*~i', '', $text);
         $data = json_decode($text, true);
         if ($data === null) {
             throw new ApiException('Failed to parse JSON response: ' . $text, 1764248503);
         }
-        return [
-            'title' => $data['title'] ?? '',
-            'description' => $data['description'] ?? '',
-            'alternativeText' => $data['alternativeText'] ?? '',
-        ];
+        $result = [];
+        foreach ($languageCodes as $languageCode) {
+            $languageData = $data[$languageCode] ?? [];
+            $result[$languageCode] = [
+                'title' => $languageData['title'] ?? '',
+                'description' => $languageData['description'] ?? '',
+                'alternativeText' => $languageData['alternativeText'] ?? '',
+            ];
+        }
+        return $result;
     }
 }

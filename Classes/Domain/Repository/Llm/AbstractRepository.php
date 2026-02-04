@@ -15,19 +15,20 @@ abstract class AbstractRepository
     protected const DEFAULT_MAX_LENGTH_DESCRIPTION = 255;
 
     protected string $requestMethod = 'POST';
-    protected string $languageCode = ''; // e.g. "en"
 
     public function __construct(
         protected RequestFactory $requestFactory,
     ) {
     }
 
-    protected function getPrompt(): string
+    protected function getPrompt(array $languageCodes): string
     {
         $prompt = $this->getPromptPrefix();
         $prompt .= 'Analyze this image and provide ' . $this->getFieldValues() . '. ';
-        $prompt .= 'Return as JSON with keys: ' . $this->getFieldKeys() . ' ';
-        $prompt .= 'Answer in language ' . $this->getLanguageCode() . ' (ISO 639) only!';
+        $prompt .= 'Return as JSON object with language codes as keys. ';
+        $prompt .= 'Required languages: ' . implode(', ', $languageCodes) . '. ';
+        $prompt .= 'Each language must have keys: ' . $this->getFieldKeys() . '. ';
+        $prompt .= 'Example: {"en": {"title": "...", "description": "...", "alternativeText": "..."}, "de": {...}}';
         return $prompt;
     }
 
@@ -73,15 +74,5 @@ abstract class AbstractRepository
             $fields['alternativeText'] = 'alternative text (max ' . $maxLength . ' characters)';
         }
         return $fields;
-    }
-
-    protected function getLanguageCode(): string
-    {
-        return $this->languageCode;
-    }
-
-    protected function setLanguageCode(string $languageCode): void
-    {
-        $this->languageCode = $languageCode;
     }
 }

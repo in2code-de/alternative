@@ -32,24 +32,39 @@ class AlternativeService
         $this->enforce = $enforce;
         $metadata = $image->getMetaData();
         $properties = $metadata->get();
+        $languagesToUpdate = $this->getLanguagesToUpdate($properties, $image);
+        if ($languagesToUpdate !== []) {
+            $allLabels = $this->llmRepository->analyzeImageForLanguages($image, array_values($languagesToUpdate));
+            foreach ($languagesToUpdate as $languageId => $languageCode) {
+                $labels = $allLabels[$languageCode] ?? [];
+                if ($languageId === 0) {
+                    $this->updateMetadata((int)$properties['uid'], $labels);
+                } else {
+                    $translation = $this->getOrCreateTranslation((int)$properties['uid'], $languageId, $image->getUid());
+                    $this->updateMetadata($translation['uid'], $labels);
+                }
+            }
+            $changed = true;
+        }
+        return $changed;
+    }
 
+    protected function getLanguagesToUpdate(array $properties, File $image): array
+    {
+        $languagesToUpdate = [];
         foreach ($this->getAllLanguages() as $languageId => $languageCode) {
             if ($languageId === 0) {
                 if ($this->shouldUpdate($properties)) {
-                    $labels = $this->llmRepository->analyzeImage($image, $languageCode);
-                    $this->updateMetadata((int)$properties['uid'], $labels);
-                    $changed = true;
+                    $languagesToUpdate[$languageId] = $languageCode;
                 }
             } else {
                 $translation = $this->getOrCreateTranslation((int)$properties['uid'], $languageId, $image->getUid());
                 if ($this->shouldUpdate($translation)) {
-                    $labels = $this->llmRepository->analyzeImage($image, $languageCode);
-                    $this->updateMetadata($translation['uid'], $labels);
-                    $changed = true;
+                    $languagesToUpdate[$languageId] = $languageCode;
                 }
             }
         }
-        return $changed;
+        return $languagesToUpdate;
     }
 
     protected function updateMetadata(int $uid, array $labels): void

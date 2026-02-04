@@ -10,5 +10,5 @@ interface RepositoryInterface
 {
     public function checkApiKey(): void;
     public function getApiUrl(): string;
-    public function analyzeImage(File $file, string $languageCode): array;
+    public function analyzeImageForLanguages(File $file, array $languageCodes): array;
 }
