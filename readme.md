@@ -53,11 +53,17 @@ GOOGLE_API_KEY=your_api_key_from_google
 # Set metadata for all image files in storage 1
 ./vendor/bin/typo3 alternative:set "1:/"
 
-# Set metadata for all image files in a subfoler in storage 1 (maybe "fileadmin/in2code/folder/")
+# Set metadata for all image files in a subfolder in storage 1 (maybe "fileadmin/in2code/folder/")
 ./vendor/bin/typo3 alternative:set "1:/in2code/folder/"
 
-# Enforce to set metadata for all image files in storage 1
+# Enforce to set metadata for all image files (even if there are already some metadata) in storage 1
 ./vendor/bin/typo3 alternative:set "1:/" 1
+
+# Continue on errors (log and skip failed images instead of aborting)
+./vendor/bin/typo3 alternative:set "1:/" 0 1
+
+# Enforce and continue on errors
+./vendor/bin/typo3 alternative:set "1:/" 1 1
 ```
 
 ## Custom LLM Integration (like ChatGPT, Claude, Mistral, etc.)
