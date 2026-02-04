@@ -213,14 +213,21 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['alternative']['llmRepositoryClass']
 
 ## Changelog and breaking changes
 
-| Version | Date       | State   | Description                                                                                      |
-|---------|------------|---------|--------------------------------------------------------------------------------------------------|
-| 3.0.1   | 2026-02-02 | Task    | Add funding section to composer.json                                                             |
-| 3.0.0   | 2026-01-28 | Feature | Configure max length, configure a pre-prompt text, some improvements for local development       |
-| 2.0.0   | 2025-12-31 | Feature | Prepare overruling of the GeminiRepository                                                       |
-| 1.2.0   | 2025-12-07 | Feature | Support TYPO3 14, use better titles and icons, decrease length for metadata, skip missing images |
-| 1.1.0   | 2025-12-04 | Feature | Add ddev as local environment, prevent syntax error in PHP 8.2                                   |
-| 1.0.0   | 2025-12-03 | Task    | Initial release of in2code/alternative                                                           |
+### Changelog
+
+| Version   | Date       | State   | Description                                                                                      |
+|-----------|------------|---------|--------------------------------------------------------------------------------------------------|
+| 4.0.0 !!! | 2026-02-04 | Feature | Performance update for systems with a lot of languages                                           |
+| 3.0.1     | 2026-02-02 | Task    | Add funding section to composer.json                                                             |
+| 3.0.0     | 2026-01-28 | Feature | Configure max length, configure a pre-prompt text, some improvements for local development       |
+| 2.0.0     | 2025-12-31 | Feature | Prepare overruling of the GeminiRepository                                                       |
+| 1.2.0     | 2025-12-07 | Feature | Support TYPO3 14, use better titles and icons, decrease length for metadata, skip missing images |
+| 1.1.0     | 2025-12-04 | Feature | Add ddev as local environment, prevent syntax error in PHP 8.2                                   |
+| 1.0.0     | 2025-12-03 | Task    | Initial release of in2code/alternative                                                           |
+
+### Breaking changes
+
+**Update to version 4.0.0:** If you have implemented your own LLM by extending `RepositoryInterface` with your own PHP class, you have to adjust your integration with multilanguage support now. See implementation example above.
 
 
 ## Contribution with ddev
