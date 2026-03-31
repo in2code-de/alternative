@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace In2code\Alternative\EventListeners;
 
@@ -14,7 +14,9 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
 
@@ -63,6 +65,22 @@ class AddFileButtonListener
             );
     }
 
+    protected function createFolderButton(ProcessFileListActionsEvent $event): LinkButton
+    {
+        $buttonNew = GeneralUtility::makeInstance(LinkButton::class);
+        return $buttonNew
+            ->setTitle(LocalizationUtility::translate(
+                'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:button.translate')
+            )
+            ->setIcon($this->iconFactory->getIcon('extension-alternative-icon-magic', IconSize::SMALL))
+            ->setHref(
+                (string)$this->uriBuilder->buildUriFromRoute(
+                    'alternative_Module.Module_addMetadataFromFolder',
+                    ['folderName' => $event->getResource()->getStorage()->getUid() . ':' . $event->getResource()->getIdentifier()]
+                )
+            );
+    }
+
     /**
      * Todo: Can be removed once TYPO3 13 support is dropped
      *
@@ -73,10 +91,14 @@ class AddFileButtonListener
     {
         if ((new Typo3Version())->getMajorVersion() === 13) {
             $actionItems = $event->getActionItems();
-            $actionItems = $this->insertArrayIntoArray(
-                $actionItems,
-                ['metadata2' => $this->getButton($event, $actionItems['metadata'])]
-            );
+            if ($actionItems['metadata'] !== null) {
+                $actionItems = $this->insertArrayIntoArray(
+                    $actionItems,
+                    ['metadata2' => $this->getButton($event, $actionItems['metadata'])]
+                );
+            } else {
+                $actionItems['metadata'] = $this->createFolderButton($event);
+            }
             $event->setActionItems($actionItems);
         }
     }
@@ -100,10 +122,12 @@ class AddFileButtonListener
         return array_merge($firstPart, $addArray, $lastPart);
     }
 
-    protected function isActivated(ResourceInterface $file): bool
+    protected function isActivated(ResourceInterface $resource): bool
     {
-        return is_a($file, File::class, true)
-            && FileUtility::isImage($file)
+        return (
+                (is_a($resource, File::class, true) && FileUtility::isImage($resource))
+                || is_a($resource, Folder::class, true)
+            )
             && $this->hasAccessToModule()
             && ConfigurationUtility::getConfigurationByKey('showButtonInFileList') === '1';
     }
