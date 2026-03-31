@@ -12,6 +12,18 @@
 			<trans-unit id="action.notfinished">
 				<source>Metadata could not be added</source>
 			</trans-unit>
+			<trans-unit id="bulk_action_singular.finished">
+				<source>Metadata successfully added for %1$s file</source>
+			</trans-unit>
+			<trans-unit id="bulk_action_singular.notfinished">
+				<source>Metadata could not be added for %1$s file</source>
+			</trans-unit>
+			<trans-unit id="bulk_action.finished">
+				<source>Metadata successfully added for %1$s files</source>
+			</trans-unit>
+			<trans-unit id="bulk_action.notfinished">
+				<source>Metadata could not be added for %1$s files</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
