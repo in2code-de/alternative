@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace In2code\Alternative\Controller;
 
 use In2code\Alternative\Domain\Service\AlternativeService;
+use In2code\Alternative\Utility\FileUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -74,10 +75,12 @@ class ModuleController extends ActionController
         $errors = 0;
         $successes = 0;
         foreach ($folder->getFiles() as $file) {
-            if ($this->alternativeService->setImageMetadata($file, false)) {
-                $successes++;
-            } else {
-                $errors++;
+            if (FileUtility::isImage($file)) {
+                if ($this->alternativeService->setImageMetadata($file, false)) {
+                    $successes++;
+                } else {
+                    $errors++;
+                }
             }
         }
 
