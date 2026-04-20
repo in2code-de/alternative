@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-01-01T12:00:00Z" product-name="alternative">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-01-01T12:00:00Z"
+	      product-name="alternative">
 		<header/>
 		<body>
 			<trans-unit id="button.translate">
@@ -19,17 +20,9 @@
                 <source>Metadata successfully added for %1$s file</source>
                 <target state="translated">Metadaten erfolgreich für %1$s Datei gesetzt</target>
             </trans-unit>
-            <trans-unit id="bulk_action_singular.notfinished">
-                <source>Metadata could not be added for %1$s file</source>
-                <target state="translated">Metadaten konnten für %1$s Datei nicht gesetzt werden</target>
-            </trans-unit>
 			<trans-unit id="bulk_action.finished">
                 <source>Metadata successfully added for %1$s files</source>
                 <target state="translated">Metadaten erfolgreich für %1$s Dateien gesetzt</target>
-            </trans-unit>
-            <trans-unit id="bulk_action.notfinished">
-                <source>Metadata could not be added for %1$s files</source>
-                <target state="translated">Metadaten konnten für %1$s Dateien nicht gesetzt werden</target>
             </trans-unit>
 		</body>
 	</file>

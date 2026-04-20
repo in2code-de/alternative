@@ -72,32 +72,20 @@ class ModuleController extends ActionController
 
     protected function addMetaDataToFolder(Folder $folder): void
     {
-        $errors = 0;
         $successes = 0;
         foreach ($folder->getFiles() as $file) {
             if (FileUtility::isImage($file)) {
                 if ($this->alternativeService->setImageMetadata($file, false)) {
                     $successes++;
-                } else {
-                    $errors++;
                 }
             }
         }
 
         if ($successes) {
-            $singular = $successes === 1 ? '_singular' : '';
+            $key = $successes === 1 ? 'bulk_action_singular.finished' : 'bulk_action.finished';
             $this->addMessage(LocalizationUtility::translate(
-                'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:bulk_action' . $singular . '.finished', 'alternative',  [$successes]
+                'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:' . $key, 'alternative', [$successes]
             ));
-        }
-        if ($errors) {
-            $singular = $errors === 1 ? '_singular' : '';
-            $this->addMessage(
-                LocalizationUtility::translate(
-                    'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:bulk_action' . $singular . '.notfinished', 'alternative',  [$errors]
-                ),
-                ContextualFeedbackSeverity::ERROR
-            );
         }
     }
 }
