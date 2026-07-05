@@ -13,6 +13,9 @@ showButtonInFileList = 1
 # cat=advanced//100; type=text; label= Gemini API key: Better use env GOOGLE_API_KEY instead
 apiKey =
 
+# cat=advanced//105; type=text; label= Gemini model: Better use env GOOGLE_GEMINI_MODEL instead
+geminiModel =
+
 # cat=advanced//110; type=text; label= Limit to languages: If set, limit to this language identifiers only. Use a commaseparated list of numbers
 limitToLanguages =
 

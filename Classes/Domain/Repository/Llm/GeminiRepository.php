@@ -12,15 +12,16 @@ use TYPO3\CMS\Core\Resource\File;
 
 class GeminiRepository extends AbstractRepository implements RepositoryInterface
 {
-    private string $apiKey = '';
+    private string $apiKey;
     private string $apiUrl = 'https://generativelanguage.googleapis.com/v1/models/';
-    private string $model = 'gemini-2.5-flash:generateContent';
+    private string $model;
 
     public function __construct(
         protected RequestFactory $requestFactory,
     ) {
         parent::__construct($requestFactory);
         $this->apiKey = getenv('GOOGLE_API_KEY') ?: ConfigurationUtility::getConfigurationByKey('apiKey');
+        $this->model = ConfigurationUtility::getModel();
     }
 
     public function checkApiKey(): void
