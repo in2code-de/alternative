@@ -28,8 +28,19 @@ abstract class AbstractRepository
         $prompt .= 'Required languages: ' . implode(', ', $languageCodes) . '. ';
         $prompt .= 'Each language must have keys: ' . $this->getFieldKeys() . '. ';
         $prompt .= 'Return ONLY a valid JSON object, no markdown, no code blocks, no explanation. ';
-        $prompt .= 'Format: {"en": {"title": "...", "description": "...", "alternativeText": "..."}, "de": {...}}';
+        $prompt .= 'Format: ' . $this->getFormat($languageCodes, array_keys($this->getFields()));
         return $prompt;
+    }
+
+    protected function getFormat(array $languageCodes, array $fields): string
+    {
+        $format = [];
+        foreach ($languageCodes as $languageCode) {
+            foreach ($fields as $field) {
+                $format[$languageCode][$field] = '...';
+            }
+        }
+        return json_encode($format, JSON_UNESCAPED_UNICODE);
     }
 
     protected function getPromptPrefix(): string
