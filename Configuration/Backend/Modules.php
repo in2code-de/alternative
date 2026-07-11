@@ -14,6 +14,7 @@ return [
         'controllerActions' => [
             ModuleController::class => [
                 'addMetadata',
+                'addMetadataFromFolder',
             ],
         ],
     ],
