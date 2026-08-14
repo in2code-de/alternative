@@ -13,7 +13,7 @@ use TYPO3\CMS\Core\Resource\File;
 class GeminiRepository extends AbstractRepository implements RepositoryInterface
 {
     private string $apiKey;
-    private string $apiUrl = 'https://generativelanguage.googleapis.com/v1/models/';
+    private string $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
     private string $model;
 
     public function __construct(
@@ -59,6 +59,11 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
                             ],
                         ],
                     ],
+                ],
+            ],
+            'generationConfig' => [
+                'thinkingConfig' => [
+                    'thinkingLevel' => 'minimal',
                 ],
             ],
         ];
