@@ -61,6 +61,11 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
                     ],
                 ],
             ],
+            'generationConfig' => [
+                'thinkingConfig' => [
+                    'thinkingLevel' => 'minimal',
+                ],
+            ],
         ];
         $additionalOptions = [
             'headers' => [
