@@ -69,18 +69,36 @@ class AlternativeService
 
     protected function updateMetadata(int $uid, array $labels): void
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(self::TABLE);
-        $connection->update(
-            self::TABLE,
-            [
-                'title' => $labels['title'],
-                'description' => $labels['description'],
-                'alternative' => $labels['alternativeText'],
-            ],
-            [
-                'uid' => $uid,
-            ]
-        );
+        $fieldsToUpdate = $this->getUpdatesFields($labels);
+        if ($fieldsToUpdate !== []) {
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(self::TABLE);
+            $connection->update(
+                self::TABLE,
+                $fieldsToUpdate,
+                [
+                    'uid' => $uid,
+                ]
+            );
+        }
+    }
+
+    protected function getUpdatesFields(array $labels): array
+    {
+        $fields = [];
+
+        if (ConfigurationUtility::getConfigurationByKey('setTitle') === '1') {
+            $fields['title'] = $labels['title'];
+        }
+
+        if (ConfigurationUtility::getConfigurationByKey('setDescription') === '1') {
+            $fields['description'] = $labels['description'];
+        }
+
+        if (ConfigurationUtility::getConfigurationByKey('setAlternative') === '1') {
+            $fields['alternative'] = $labels['alternativeText'];
+        }
+
+        return $fields;
     }
 
     protected function getOrCreateTranslation(int $metadataUid, int $languageUid, int $fileUid): array
@@ -165,6 +183,8 @@ class AlternativeService
         if ($this->enforce) {
             return true;
         }
-        return empty($properties['title']) && empty($properties['description']) && empty($properties['alternative']);
+        return (ConfigurationUtility::getConfigurationByKey('setTitle') !== '1' || empty($properties['title'])) &&
+            (ConfigurationUtility::getConfigurationByKey('setDescription') !== '1' || empty($properties['description'])) &&
+            (ConfigurationUtility::getConfigurationByKey('setAlternative') !== '1' || empty($properties['alternative']));
     }
 }
