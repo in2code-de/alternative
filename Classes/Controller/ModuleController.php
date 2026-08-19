@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace In2code\Alternative\Controller;
 
 use In2code\Alternative\Domain\Service\AlternativeService;
+use In2code\Alternative\Utility\FileUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -23,6 +26,7 @@ class ModuleController extends ActionController
         readonly protected FileRepository $fileRepository,
         readonly protected FlashMessageService $flashMessageService,
         readonly protected UriBuilder $uriBuilderCore,
+        readonly protected ResourceFactory $resourceFactory,
     ) {
     }
 
@@ -44,6 +48,13 @@ class ModuleController extends ActionController
         }
         return $this->openFileList($file);
     }
+    public function addMetadataFromFolderAction(string $folderName): ResponseInterface
+    {
+        $folder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($folderName);
+        $this->addMetaDataToFolder($folder);
+
+        return $this->redirectToUri($this->uriBuilderCore->buildUriFromRoute('media_management', ['id' => $folder->getParentFolder()->getCombinedIdentifier()]));
+    }
 
     protected function openFileList(File $file): ResponseInterface
     {
@@ -57,5 +68,24 @@ class ModuleController extends ActionController
         $message = GeneralUtility::makeInstance(FlashMessage::class, $message, 'Metadata', $severity, true);
         $messageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
         $messageQueue->addMessage($message);
+    }
+
+    protected function addMetaDataToFolder(Folder $folder): void
+    {
+        $successes = 0;
+        foreach ($folder->getFiles() as $file) {
+            if (FileUtility::isImage($file)) {
+                if ($this->alternativeService->setImageMetadata($file, false)) {
+                    $successes++;
+                }
+            }
+        }
+
+        if ($successes) {
+            $key = $successes === 1 ? 'bulk_action_singular.finished' : 'bulk_action.finished';
+            $this->addMessage(LocalizationUtility::translate(
+                'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:' . $key, 'alternative', [$successes]
+            ));
+        }
     }
 }
