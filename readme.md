@@ -218,6 +218,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['alternative']['llmRepositoryClass']
 
 | Version   | Date       | State   | Description                                                                                      |
 |-----------|------------|---------|--------------------------------------------------------------------------------------------------|
+| 5.1.0     | 2026-08-20 | Feature | Allow metadata generation for images in a whole folder, update default gemini model, set thinkingLevel for Gemini 3.x, various bugfixes (field filtering, non-image file filtering, bulk error handling) |
 | 5.0.0     | 2026-07-05 | Feature | Make gemini model overwriteable via ENV or extension settings                                    |
 | 4.1.0     | 2026-02-04 | Feature | Skip and log errors feature on CLI                                                               |
 | 4.0.1     | 2026-02-04 | Bugfix  | Harden response handling against invalid formats                                                 |
