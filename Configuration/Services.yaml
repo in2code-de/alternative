@@ -29,3 +29,7 @@ services:
       - name: event.listener
         identifier: 'alternative/filelist-button'
         event: TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent
+
+  # Public, because ConfigurationUtility reads the module settings via GeneralUtility::makeInstance()
+  In2code\Alternative\Domain\Repository\SettingsRepository:
+    public: true
