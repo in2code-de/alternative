@@ -20,7 +20,7 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
         protected RequestFactory $requestFactory,
     ) {
         parent::__construct($requestFactory);
-        $this->apiKey = getenv('GOOGLE_API_KEY') ?: ConfigurationUtility::getConfigurationByKey('apiKey');
+        $this->apiKey = ConfigurationUtility::getApiKey();
         $this->model = ConfigurationUtility::getModel();
     }
 
@@ -63,7 +63,7 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
             ],
             'generationConfig' => [
                 'thinkingConfig' => [
-                    'thinkingLevel' => 'minimal',
+                    'thinkingLevel' => ConfigurationUtility::getThinkingLevel(),
                 ],
             ],
         ];

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-09-23T12:00:00Z" product-name="alternative">
+		<header/>
+		<body>
+			<trans-unit id="mainmodule.title">
+				<source>AI</source>
+				<target state="translated">KI</target>
+			</trans-unit>
+			<trans-unit id="module.title">
+				<source>Alternative</source>
+				<target state="translated">Alternative</target>
+			</trans-unit>
+			<trans-unit id="module.description">
+				<source>Settings for AI generated image metadata (alternative text, title, description)</source>
+				<target state="translated">Einstellungen für KI-generierte Bild-Metadaten (Alternativtext, Titel, Beschreibung)</target>
+			</trans-unit>
+			<trans-unit id="module.shortDescription">
+				<source>AI image metadata settings</source>
+				<target state="translated">Einstellungen KI-Bild-Metadaten</target>
+			</trans-unit>
+			<trans-unit id="module.intro">
+				<source>Values stored here overrule the extension configuration. Empty fields use the value shown as placeholder.</source>
+				<target state="translated">Hier gespeicherte Werte überschreiben die Extension-Konfiguration. Leere Felder verwenden den als Platzhalter angezeigten Wert.</target>
+			</trans-unit>
+			<trans-unit id="button.save">
+				<source>Save settings</source>
+				<target state="translated">Einstellungen speichern</target>
+			</trans-unit>
+			<trans-unit id="setting.apiKey">
+				<source>Gemini API key</source>
+				<target state="translated">Gemini API-Key</target>
+			</trans-unit>
+			<trans-unit id="setting.apiKey.description">
+				<source>Only visible for administrators. Recommended: set the environment variable GOOGLE_API_KEY instead. Leave empty to keep the stored key.</source>
+				<target state="translated">Nur für Administratoren sichtbar. Empfohlen: stattdessen die Umgebungsvariable GOOGLE_API_KEY setzen. Leer lassen, um den gespeicherten Key zu behalten.</target>
+			</trans-unit>
+			<trans-unit id="setting.geminiModel">
+				<source>Gemini model</source>
+				<target state="translated">Gemini-Modell</target>
+			</trans-unit>
+			<trans-unit id="setting.geminiModel.description">
+				<source>Model identifier including method, e.g. gemini-3.5-flash-lite:generateContent</source>
+				<target state="translated">Modellbezeichnung inklusive Methode, z. B. gemini-3.5-flash-lite:generateContent</target>
+			</trans-unit>
+			<trans-unit id="setting.thinkingLevel">
+				<source>Thinking level</source>
+				<target state="translated">Thinking-Level</target>
+			</trans-unit>
+			<trans-unit id="setting.thinkingLevel.description">
+				<source>How much the model reasons before answering. Higher levels can improve quality but are slower and more expensive. Only supported by Gemini 3.x models.</source>
+				<target state="translated">Wie viel das Modell vor der Antwort „nachdenkt“. Höhere Stufen können die Qualität verbessern, sind aber langsamer und teurer. Nur von Gemini-3.x-Modellen unterstützt.</target>
+			</trans-unit>
+			<trans-unit id="setting.promptPrefix">
+				<source>Prompt prefix (system prompt)</source>
+				<target state="translated">Prompt-Präfix (System-Prompt)</target>
+			</trans-unit>
+			<trans-unit id="setting.promptPrefix.description">
+				<source>Text that is added in front of every image analysis prompt. If set, the prompt prefix file is ignored.</source>
+				<target state="translated">Text, der jedem Prompt zur Bildanalyse vorangestellt wird. Ist er gesetzt, wird die Prompt-Präfix-Datei ignoriert.</target>
+			</trans-unit>
+			<trans-unit id="setting.promptPrefixFile">
+				<source>Prompt prefix file</source>
+				<target state="translated">Prompt-Präfix-Datei</target>
+			</trans-unit>
+			<trans-unit id="setting.promptPrefixFile.description">
+				<source>Only visible for administrators. Path to a text file with a prompt prefix, e.g. EXT:extension/Resources/Private/prompt.txt or fileadmin/promptprefix.txt</source>
+				<target state="translated">Nur für Administratoren sichtbar. Pfad zu einer Textdatei mit Prompt-Präfix, z. B. EXT:extension/Resources/Private/prompt.txt oder fileadmin/promptprefix.txt</target>
+			</trans-unit>
+			<trans-unit id="setting.setAlternative">
+				<source>Set alternative text</source>
+				<target state="translated">Alternativtext setzen</target>
+			</trans-unit>
+			<trans-unit id="setting.setAlternative.description">
+				<source>Generate a value for the alternative text of images.</source>
+				<target state="translated">Einen Wert für den Alternativtext von Bildern erzeugen.</target>
+			</trans-unit>
+			<trans-unit id="setting.setTitle">
+				<source>Set title</source>
+				<target state="translated">Titel setzen</target>
+			</trans-unit>
+			<trans-unit id="setting.setTitle.description">
+				<source>Generate a value for the image title.</source>
+				<target state="translated">Einen Wert für den Bildtitel erzeugen.</target>
+			</trans-unit>
+			<trans-unit id="setting.setDescription">
+				<source>Set description</source>
+				<target state="translated">Beschreibung setzen</target>
+			</trans-unit>
+			<trans-unit id="setting.setDescription.description">
+				<source>Generate a value for the image description.</source>
+				<target state="translated">Einen Wert für die Bildbeschreibung erzeugen.</target>
+			</trans-unit>
+			<trans-unit id="setting.showButtonInFileList">
+				<source>Show button in file list</source>
+				<target state="translated">Button in der Dateiliste anzeigen</target>
+			</trans-unit>
+			<trans-unit id="setting.showButtonInFileList.description">
+				<source>Show or hide the AI button in the backend file list.</source>
+				<target state="translated">Den KI-Button in der Dateiliste im Backend ein- oder ausblenden.</target>
+			</trans-unit>
+			<trans-unit id="setting.limitToLanguages">
+				<source>Limit to languages</source>
+				<target state="translated">Auf Sprachen beschränken</target>
+			</trans-unit>
+			<trans-unit id="setting.limitToLanguages.description">
+				<source>Comma separated list of language IDs. If empty, metadata is generated for all languages.</source>
+				<target state="translated">Kommagetrennte Liste von Sprach-IDs. Leer bedeutet: Metadaten für alle Sprachen erzeugen.</target>
+			</trans-unit>
+			<trans-unit id="setting.maxLengthTitle">
+				<source>Max length title</source>
+				<target state="translated">Maximale Länge Titel</target>
+			</trans-unit>
+			<trans-unit id="setting.maxLengthTitle.description">
+				<source>Maximum number of characters for the title.</source>
+				<target state="translated">Maximale Anzahl Zeichen für den Titel.</target>
+			</trans-unit>
+			<trans-unit id="setting.maxLengthAlternative">
+				<source>Max length alternative text</source>
+				<target state="translated">Maximale Länge Alternativtext</target>
+			</trans-unit>
+			<trans-unit id="setting.maxLengthAlternative.description">
+				<source>Maximum number of characters for the alternative text.</source>
+				<target state="translated">Maximale Anzahl Zeichen für den Alternativtext.</target>
+			</trans-unit>
+			<trans-unit id="setting.maxLengthDescription">
+				<source>Max length description</source>
+				<target state="translated">Maximale Länge Beschreibung</target>
+			</trans-unit>
+			<trans-unit id="setting.maxLengthDescription.description">
+				<source>Maximum number of characters for the description.</source>
+				<target state="translated">Maximale Anzahl Zeichen für die Beschreibung.</target>
+			</trans-unit>
+			<trans-unit id="secret.remove">
+				<source>Remove stored key</source>
+				<target state="translated">Gespeicherten Key entfernen</target>
+			</trans-unit>
+			<trans-unit id="source.environment">
+				<source>Set via environment variable %s, cannot be changed here.</source>
+				<target state="translated">Über die Umgebungsvariable %s gesetzt, hier nicht änderbar.</target>
+			</trans-unit>
+			<trans-unit id="source.module">
+				<source>Stored in this module.</source>
+				<target state="translated">In diesem Modul hinterlegt.</target>
+			</trans-unit>
+			<trans-unit id="source.extensionConfiguration">
+				<source>Taken from the extension configuration.</source>
+				<target state="translated">Aus der Extension-Konfiguration übernommen.</target>
+			</trans-unit>
+			<trans-unit id="source.none">
+				<source>Not configured yet.</source>
+				<target state="translated">Noch nicht konfiguriert.</target>
+			</trans-unit>
+			<trans-unit id="option.default">
+				<source>Default (%s)</source>
+				<target state="translated">Standard (%s)</target>
+			</trans-unit>
+			<trans-unit id="option.boolean.1">
+				<source>Yes</source>
+				<target state="translated">Ja</target>
+			</trans-unit>
+			<trans-unit id="option.boolean.0">
+				<source>No</source>
+				<target state="translated">Nein</target>
+			</trans-unit>
+			<trans-unit id="message.saved">
+				<source>Settings saved.</source>
+				<target state="translated">Einstellungen gespeichert.</target>
+			</trans-unit>
+			<trans-unit id="message.invalid">
+				<source>Settings saved, but these values were invalid and have been ignored:</source>
+				<target state="translated">Einstellungen gespeichert, aber diese Werte waren ungültig und wurden ignoriert:</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

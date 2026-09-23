@@ -43,11 +43,17 @@ abstract class AbstractRepository
         return json_encode($format, JSON_UNESCAPED_UNICODE);
     }
 
+    /**
+     * A prompt prefix text from the backend module is preferred over the prompt prefix file
+     */
     protected function getPromptPrefix(): string
     {
         $content = '';
+        $prefix = trim(ConfigurationUtility::getConfigurationByKey('promptPrefix'));
         $filePath = ConfigurationUtility::getConfigurationByKey('promptPrefixFile');
-        if ($filePath !== '') {
+        if ($prefix !== '') {
+            $content = $prefix . PHP_EOL . PHP_EOL;
+        } elseif ($filePath !== '') {
             $absolutePath = GeneralUtility::getFileAbsFileName($filePath);
             if ($absolutePath !== '' && is_file($absolutePath) && is_readable($absolutePath)) {
                 $contentFile = file_get_contents($absolutePath);
