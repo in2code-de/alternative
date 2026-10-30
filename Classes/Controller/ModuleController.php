@@ -79,6 +79,9 @@ class ModuleController extends ActionController
     {
         $successes = 0;
         foreach ($folder->getFiles() as $file) {
+            if ($this->errorMessages !== []) {
+                break;
+            }
             if (FileUtility::isImage($file)) {
                 if ($this->setImageMetadata($file)) {
                     $successes++;
