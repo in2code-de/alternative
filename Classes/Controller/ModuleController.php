@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace In2code\Alternative\Controller;
 
 use In2code\Alternative\Domain\Service\AlternativeService;
+use In2code\Alternative\Exception\ApiException;
+use In2code\Alternative\Exception\ConfigurationException;
 use In2code\Alternative\Utility\FileUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -21,6 +23,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class ModuleController extends ActionController
 {
+    protected array $errorMessages = [];
+
     public function __construct(
         readonly protected AlternativeService $alternativeService,
         readonly protected FileRepository $fileRepository,
@@ -33,12 +37,12 @@ class ModuleController extends ActionController
     public function addMetadataAction(int $file): ResponseInterface
     {
         $file = $this->fileRepository->findByUid($file);
-        $result = $this->alternativeService->setImageMetadata($file, false);
+        $result = $this->setImageMetadata($file);
         if ($result) {
             $this->addMessage(LocalizationUtility::translate(
                 'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:action.finished'
             ));
-        } else {
+        } elseif ($this->errorMessages === []) {
             $this->addMessage(
                 LocalizationUtility::translate(
                     'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:action.notfinished'
@@ -46,6 +50,7 @@ class ModuleController extends ActionController
                 ContextualFeedbackSeverity::ERROR
             );
         }
+        $this->addErrorMessages();
         return $this->openFileList($file);
     }
     public function addMetadataFromFolderAction(string $folderName): ResponseInterface
@@ -75,7 +80,7 @@ class ModuleController extends ActionController
         $successes = 0;
         foreach ($folder->getFiles() as $file) {
             if (FileUtility::isImage($file)) {
-                if ($this->alternativeService->setImageMetadata($file, false)) {
+                if ($this->setImageMetadata($file)) {
                     $successes++;
                 }
             }
@@ -86,6 +91,32 @@ class ModuleController extends ActionController
             $this->addMessage(LocalizationUtility::translate(
                 'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:' . $key, 'alternative', [$successes]
             ));
+        }
+        $this->addErrorMessages();
+    }
+
+    protected function setImageMetadata(File $file): bool
+    {
+        $result = false;
+        try {
+            $result = $this->alternativeService->setImageMetadata($file, false);
+        } catch (ApiException|ConfigurationException $exception) {
+            $this->errorMessages[$exception->getMessage()] = $exception->getMessage();
+        }
+        return $result;
+    }
+
+    protected function addErrorMessages(): void
+    {
+        foreach ($this->errorMessages as $errorMessage) {
+            $this->addMessage(
+                LocalizationUtility::translate(
+                    'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:action.error',
+                    'alternative',
+                    [$errorMessage]
+                ),
+                ContextualFeedbackSeverity::ERROR
+            );
         }
     }
 }

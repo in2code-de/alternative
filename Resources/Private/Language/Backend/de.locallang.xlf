@@ -16,6 +16,10 @@
 				<source>Metadata could not be added</source>
 				<target state="translated">Metadaten konnten nicht gesetzt werden</target>
 			</trans-unit>
+			<trans-unit id="action.error">
+				<source>Metadata could not be added: %1$s</source>
+				<target state="translated">Metadaten konnten nicht gesetzt werden: %1$s</target>
+			</trans-unit>
 			<trans-unit id="bulk_action_singular.finished">
                 <source>Metadata successfully added for %1$s file</source>
                 <target state="translated">Metadaten erfolgreich für %1$s Datei gesetzt</target>
