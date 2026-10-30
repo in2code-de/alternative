@@ -33,7 +33,7 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
 
     public function getApiUrl(): string
     {
-        return $this->apiUrl . $this->model . '?key=' . $this->apiKey;
+        return $this->apiUrl . $this->model;
     }
 
     public function analyzeImageForLanguages(File $file, array $languageCodes): array
@@ -71,6 +71,7 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
             // Guzzle exceptions on 4xx/5xx truncate the response body that contains the actual API error
             'http_errors' => false,
             'headers' => [
+                'x-goog-api-key' => $this->apiKey,
                 'Content-Type' => 'application/json',
             ],
             'body' => json_encode($payload),
