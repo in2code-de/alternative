@@ -68,6 +68,8 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
             ],
         ];
         $additionalOptions = [
+            // Guzzle exceptions on 4xx/5xx truncate the response body that contains the actual API error
+            'http_errors' => false,
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
@@ -75,7 +77,8 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
         ];
         $response = $this->requestFactory->request($this->getApiUrl(), $this->requestMethod, $additionalOptions);
         if ($response->getStatusCode() !== 200) {
-            throw new ApiException('Failed to analyze image: ' . $response->getBody()->getContents(), 1764248501);
+            throw new ApiException('Failed to analyze image (HTTP ' . $response->getStatusCode() . '): '
+                . $this->getErrorMessage($response->getBody()->getContents()), 1764248501);
         }
         $responseData = json_decode($response->getBody()->getContents(), true);
         if (isset($responseData['candidates'][0]['content']['parts']) === false) {

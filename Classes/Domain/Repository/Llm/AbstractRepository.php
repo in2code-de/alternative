@@ -99,4 +99,10 @@ abstract class AbstractRepository
         }
         return trim($text);
     }
+
+    protected function getErrorMessage(string $responseBody): string
+    {
+        $responseData = json_decode($responseBody, true);
+        return $responseData['error']['message'] ?? $responseBody;
+    }
 }
