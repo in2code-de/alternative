@@ -216,19 +216,20 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['alternative']['llmRepositoryClass']
 
 ### Changelog
 
-| Version   | Date       | State   | Description                                                                                      |
-|-----------|------------|---------|--------------------------------------------------------------------------------------------------|
+| Version   | Date       | State   | Description                                                                                                                                                                                              |
+|-----------|------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 6.0.0     | 2026-11-02 | Task    | Harden alt-text generation for images in folders for TYPO3 13 and 14, small improvements in showing error messages                                                                                       |
 | 5.1.0     | 2026-08-20 | Feature | Allow metadata generation for images in a whole folder, update default gemini model, set thinkingLevel for Gemini 3.x, various bugfixes (field filtering, non-image file filtering, bulk error handling) |
-| 5.0.0     | 2026-07-05 | Feature | Make gemini model overwriteable via ENV or extension settings                                    |
-| 4.1.0     | 2026-02-04 | Feature | Skip and log errors feature on CLI                                                               |
-| 4.0.1     | 2026-02-04 | Bugfix  | Harden response handling against invalid formats                                                 |
-| 4.0.0 !!! | 2026-02-04 | Feature | Performance update for systems with a lot of languages                                           |
-| 3.0.1     | 2026-02-02 | Task    | Add funding section to composer.json                                                             |
-| 3.0.0     | 2026-01-28 | Feature | Configure max length, configure a pre-prompt text, some improvements for local development       |
-| 2.0.0     | 2025-12-31 | Feature | Prepare overruling of the GeminiRepository                                                       |
-| 1.2.0     | 2025-12-07 | Feature | Support TYPO3 14, use better titles and icons, decrease length for metadata, skip missing images |
-| 1.1.0     | 2025-12-04 | Feature | Add ddev as local environment, prevent syntax error in PHP 8.2                                   |
-| 1.0.0     | 2025-12-03 | Task    | Initial release of in2code/alternative                                                           |
+| 5.0.0     | 2026-07-05 | Feature | Make gemini model overwriteable via ENV or extension settings                                                                                                                                            |
+| 4.1.0     | 2026-02-04 | Feature | Skip and log errors feature on CLI                                                                                                                                                                       |
+| 4.0.1     | 2026-02-04 | Bugfix  | Harden response handling against invalid formats                                                                                                                                                         |
+| 4.0.0 !!! | 2026-02-04 | Feature | Performance update for systems with a lot of languages                                                                                                                                                   |
+| 3.0.1     | 2026-02-02 | Task    | Add funding section to composer.json                                                                                                                                                                     |
+| 3.0.0     | 2026-01-28 | Feature | Configure max length, configure a pre-prompt text, some improvements for local development                                                                                                               |
+| 2.0.0     | 2025-12-31 | Feature | Prepare overruling of the GeminiRepository                                                                                                                                                               |
+| 1.2.0     | 2025-12-07 | Feature | Support TYPO3 14, use better titles and icons, decrease length for metadata, skip missing images                                                                                                         |
+| 1.1.0     | 2025-12-04 | Feature | Add ddev as local environment, prevent syntax error in PHP 8.2                                                                                                                                           |
+| 1.0.0     | 2025-12-03 | Task    | Initial release of in2code/alternative                                                                                                                                                                   |
 
 ### Breaking changes
 
