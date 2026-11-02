@@ -23,9 +23,3 @@ services:
     factory:
       - '@In2code\Alternative\Domain\Repository\Llm\LlmRepositoryFactory'
       - 'create'
-
-  In2code\Alternative\EventListeners\AddFileButtonListener:
-    tags:
-      - name: event.listener
-        identifier: 'alternative/filelist-button'
-        event: TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent

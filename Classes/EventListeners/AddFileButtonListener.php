@@ -10,6 +10,8 @@ use In2code\Alternative\Utility\FileUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ActionGroup;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Information\Typo3Version;
@@ -26,6 +28,15 @@ use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
 )]
 class AddFileButtonListener
 {
+    private const BUTTON_IDENTIFIER = 'metadata2';
+    private const CORE_METADATA_IDENTIFIER = 'metadata';
+    private const CORE_DELETE_IDENTIFIER = 'delete';
+    private const ICON_IDENTIFIER = 'extension-alternative-icon-magic';
+    private const LABEL = 'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:button.translate';
+    private const ROUTE_FILE = 'alternative_Module.Module_addMetadata';
+    private const ROUTE_FOLDER = 'alternative_Module.Module_addMetadataFromFolder';
+    private const MODULE_IDENTIFIER = 'alternative_Module';
+
     public function __construct(
         readonly private IconFactory $iconFactory,
         readonly private UriBuilder $uriBuilder,
@@ -35,50 +46,35 @@ class AddFileButtonListener
     public function __invoke(ProcessFileListActionsEvent $event): void
     {
         if ($this->isActivated($event->getResource())) {
-            $this->addButton($event);
-            $this->addButtonLegacy($event);
+            // Todo: Version check and addButtonLegacy() can be removed once TYPO3 13 support is dropped
+            if ((new Typo3Version())->getMajorVersion() > 13) {
+                $this->addButton($event);
+            } else {
+                $this->addButtonLegacy($event);
+            }
         }
     }
 
     protected function addButton(ProcessFileListActionsEvent $event): void
     {
-        // Todo: If condition can be always true (removed) once TYPO3 13 support is dropped
-        if ((new Typo3Version())->getMajorVersion() > 13) {
-            $componentGroup = $event->getActionGroup(ActionGroup::primary);
-            $componentGroup->add('metadata2', $this->getButton($event, $componentGroup->get('metadata')));
-        }
+        $button = GeneralUtility::makeInstance(ComponentFactory::class)->createLinkButton();
+        $event->setAction(
+            $this->configureButton($button, $event->getResource()),
+            self::BUTTON_IDENTIFIER,
+            ActionGroup::primary,
+            after: $this->getPositionAfter($event->getResource())
+        );
     }
 
-    protected function getButton(ProcessFileListActionsEvent $event, LinkButton $button): LinkButton
+    /**
+     * Files: Show button after "edit metadata", Folders: Show button after "delete"
+     *
+     * @param ResourceInterface $resource
+     * @return string
+     */
+    protected function getPositionAfter(ResourceInterface $resource): string
     {
-        $buttonNew = clone $button;
-        return $buttonNew
-            ->setTitle(LocalizationUtility::translate(
-                'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:button.translate')
-            )
-            ->setIcon($this->iconFactory->getIcon('extension-alternative-icon-magic', IconSize::SMALL))
-            ->setHref(
-                (string)$this->uriBuilder->buildUriFromRoute(
-                    'alternative_Module.Module_addMetadata',
-                    ['file' => $event->getResource()->getUid()]
-                )
-            );
-    }
-
-    protected function createFolderButton(ProcessFileListActionsEvent $event): LinkButton
-    {
-        $buttonNew = GeneralUtility::makeInstance(LinkButton::class);
-        return $buttonNew
-            ->setTitle(LocalizationUtility::translate(
-                'LLL:EXT:alternative/Resources/Private/Language/Backend/locallang.xlf:button.translate')
-            )
-            ->setIcon($this->iconFactory->getIcon('extension-alternative-icon-magic', IconSize::SMALL))
-            ->setHref(
-                (string)$this->uriBuilder->buildUriFromRoute(
-                    'alternative_Module.Module_addMetadataFromFolder',
-                    ['folderName' => $event->getResource()->getStorage()->getUid() . ':' . $event->getResource()->getIdentifier()]
-                )
-            );
+        return $resource instanceof Folder ? self::CORE_DELETE_IDENTIFIER : self::CORE_METADATA_IDENTIFIER;
     }
 
     /**
@@ -89,21 +85,47 @@ class AddFileButtonListener
      */
     protected function addButtonLegacy(ProcessFileListActionsEvent $event): void
     {
-        if ((new Typo3Version())->getMajorVersion() === 13) {
-            $actionItems = $event->getActionItems();
-            if ($actionItems['metadata'] !== null) {
-                $actionItems = $this->insertArrayIntoArray(
-                    $actionItems,
-                    ['metadata2' => $this->getButton($event, $actionItems['metadata'])]
-                );
-            } else {
-                $actionItems['metadata'] = $this->createFolderButton($event);
-            }
-            $event->setActionItems($actionItems);
-        }
+        $actionItems = $event->getActionItems();
+        $metadataButton = $actionItems[self::CORE_METADATA_IDENTIFIER] ?? null;
+        $button = $metadataButton instanceof LinkButton
+            ? clone $metadataButton
+            : GeneralUtility::makeInstance(LinkButton::class);
+        $actionItems = $this->insertArrayIntoArray(
+            $actionItems,
+            [self::BUTTON_IDENTIFIER => $this->configureButton($button, $event->getResource())],
+            $this->getPositionAfter($event->getResource())
+        );
+        $event->setActionItems($actionItems);
+    }
+
+    protected function configureButton(LinkButton $button, ResourceInterface $resource): LinkButton
+    {
+        return $button
+            ->setTitle(LocalizationUtility::translate(self::LABEL) ?? '')
+            ->setIcon($this->iconFactory->getIcon(self::ICON_IDENTIFIER, IconSize::SMALL))
+            ->setHref($this->getUri($resource));
     }
 
     /**
+     * @param File|Folder $resource
+     * @return string
+     */
+    protected function getUri(ResourceInterface $resource): string
+    {
+        if ($resource instanceof Folder) {
+            $uri = $this->uriBuilder->buildUriFromRoute(
+                self::ROUTE_FOLDER,
+                ['folderName' => $resource->getCombinedIdentifier()]
+            );
+        } else {
+            $uri = $this->uriBuilder->buildUriFromRoute(self::ROUTE_FILE, ['file' => $resource->getUid()]);
+        }
+        return (string)$uri;
+    }
+
+    /**
+     * Insert $addArray after key $after or append it if $after does not exist
+     *
      * Todo: Can be removed once TYPO3 13 support is dropped
      *
      * @param array $existingArray
@@ -111,12 +133,12 @@ class AddFileButtonListener
      * @param string $after
      * @return array
      */
-    protected function insertArrayIntoArray(array $existingArray, array $addArray, string $after = 'metadata'): array
+    protected function insertArrayIntoArray(array $existingArray, array $addArray, string $after): array
     {
-        if (array_key_exists($after, $existingArray) === false) {
-            return $existingArray;
+        $position = count($existingArray);
+        if (array_key_exists($after, $existingArray)) {
+            $position = array_search($after, array_keys($existingArray), true) + 1;
         }
-        $position = array_search($after, array_keys($existingArray)) + 1;
         $firstPart = array_slice($existingArray, 0, $position, true);
         $lastPart = array_slice($existingArray, $position, null, true);
         return array_merge($firstPart, $addArray, $lastPart);
@@ -124,10 +146,7 @@ class AddFileButtonListener
 
     protected function isActivated(ResourceInterface $resource): bool
     {
-        return (
-                (is_a($resource, File::class, true) && FileUtility::isImage($resource))
-                || is_a($resource, Folder::class, true)
-            )
+        return (($resource instanceof File && FileUtility::isImage($resource)) || $resource instanceof Folder)
             && $this->hasAccessToModule()
             && ConfigurationUtility::getConfigurationByKey('showButtonInFileList') === '1';
     }
@@ -135,12 +154,7 @@ class AddFileButtonListener
     protected function hasAccessToModule(): bool
     {
         $backendUser = BackendUtility::getBackendUserAuthentication();
-        if ($backendUser->isAdmin()) {
-            return true;
-        }
-        if ($backendUser !== null) {
-            return $backendUser->check('modules', 'alternative_Module');
-        }
-        return false;
+        return $backendUser !== null
+            && ($backendUser->isAdmin() || $backendUser->check('modules', self::MODULE_IDENTIFIER));
     }
 }
