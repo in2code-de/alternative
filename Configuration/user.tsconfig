@@ -1,2 +1,11 @@
 #Hide module because we only need the functionality staring from existing file list
 options.hideModules := addToList(alternative_Module)
+
+# TYPO3 13: Only actions listed here are rendered directly in the file list row (others go into the "..." dropdown).
+# Core default plus "metadata2" for the AI metadata button.
+#
+# Note: Do not use ":= addToList(metadata2)" here. The core default is defined in PHP (FileList), not in TSconfig.
+# addToList would result in "metadata2" only and move view/metadata/delete into the dropdown.
+#
+# Todo: Can be removed once TYPO3 13 support is dropped
+options.file_list.primaryActions = view, metadata, metadata2, translations, delete
