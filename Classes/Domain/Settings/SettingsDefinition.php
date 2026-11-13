@@ -7,9 +7,6 @@ namespace In2code\Alternative\Domain\Settings;
 use In2code\Alternative\Domain\Model\Setting;
 use In2code\Alternative\Utility\ConfigurationUtility;
 
-/**
- * All settings that can be overwritten in the backend module "AI > Alternative"
- */
 class SettingsDefinition
 {
     /**
