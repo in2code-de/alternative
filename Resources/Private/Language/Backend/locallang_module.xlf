@@ -49,7 +49,7 @@
 				<source>Prompt prefix file</source>
 			</trans-unit>
 			<trans-unit id="setting.promptPrefixFile.description">
-				<source>Only visible for administrators. Path to a text file with a prompt prefix, e.g. EXT:extension/Resources/Private/prompt.txt or fileadmin/promptprefix.txt</source>
+				<source>Only visible for system maintainers. Path to a text file with a prompt prefix, e.g. EXT:extension/Resources/Private/prompt.txt or fileadmin/promptprefix.txt</source>
 			</trans-unit>
 			<trans-unit id="setting.setAlternative">
 				<source>Set alternative text</source>

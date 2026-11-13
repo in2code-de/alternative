@@ -64,8 +64,8 @@
 				<target state="translated">Prompt-Präfix-Datei</target>
 			</trans-unit>
 			<trans-unit id="setting.promptPrefixFile.description">
-				<source>Only visible for administrators. Path to a text file with a prompt prefix, e.g. EXT:extension/Resources/Private/prompt.txt or fileadmin/promptprefix.txt</source>
-				<target state="translated">Nur für Administratoren sichtbar. Pfad zu einer Textdatei mit Prompt-Präfix, z. B. EXT:extension/Resources/Private/prompt.txt oder fileadmin/promptprefix.txt</target>
+				<source>Only visible for system maintainers. Path to a text file with a prompt prefix, e.g. EXT:extension/Resources/Private/prompt.txt or fileadmin/promptprefix.txt</source>
+				<target state="translated">Nur für System-Maintainer sichtbar. Pfad zu einer Textdatei mit Prompt-Präfix, z. B. EXT:extension/Resources/Private/prompt.txt oder fileadmin/promptprefix.txt</target>
 			</trans-unit>
 			<trans-unit id="setting.setAlternative">
 				<source>Set alternative text</source>

@@ -65,6 +65,7 @@ its own submodule, so installing one or more of them results in one common "AI" 
   then.
 - Access is granted per backend user group: allow the module "AI" and the submodule of this extension. The API key and file/folder paths can only be seen
   and changed by administrators, the stored API key is never sent back to the browser.
+  The prompt prefix file can only be seen and changed by system maintainers.
 
 ## CLI commands
 
