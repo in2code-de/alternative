@@ -64,6 +64,7 @@ class SettingsDefinition
             ),
             new Setting(
                 key: 'limitToLanguages',
+                type: Setting::TYPE_INTEGER_LIST,
             ),
             new Setting(
                 key: 'maxLengthTitle',
